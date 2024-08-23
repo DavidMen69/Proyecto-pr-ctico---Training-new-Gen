@@ -19,7 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Table(name = "Clients")
-public class ClientsModels {
+public class ClientModel {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, unique = true)
