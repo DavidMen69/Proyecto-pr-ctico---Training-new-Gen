@@ -1,5 +1,7 @@
 package com.example.ProyectoCoolCorders.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +21,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Table(name = "Clients")
-public class ClientsModels {
+public class ClientModel {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, unique = true)
+    @JsonIgnore
     private Long id;
 
     @Column(updatable = false, nullable = false, length = 20, unique = true)
