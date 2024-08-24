@@ -3,8 +3,8 @@ package com.example.ProyectoCoolCorders.Controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.ProyectoCoolCorders.Dto.ClientModelDto;
 import com.example.ProyectoCoolCorders.Models.ClientModel;
-import com.example.ProyectoCoolCorders.Models.Dto.ClientModelDto;
 import com.example.ProyectoCoolCorders.Services.ClientService;
 import lombok.RequiredArgsConstructor;
 

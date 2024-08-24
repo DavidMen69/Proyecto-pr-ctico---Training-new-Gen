@@ -1,4 +1,4 @@
-package com.example.ProyectoCoolCorders.Models.Dto;
+package com.example.ProyectoCoolCorders.Dto;
 
 public class ClientModelDto {
     public String document;
