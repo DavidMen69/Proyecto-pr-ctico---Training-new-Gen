@@ -10,10 +10,13 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
@@ -43,6 +46,26 @@ public class ClientController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Client created Sucessfully");
+    }
+
+    @PutMapping("/{document}")
+    public ResponseEntity<String> updateClient(@PathVariable String document, @RequestBody ClientModelDto clientDTO) {
+        try {
+            clientService.updateClient(document, clientDTO);
+            return ResponseEntity.ok("Cliente actualizado exitosamente.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+    
+    @DeleteMapping("/{document}")
+    public ResponseEntity<String> destroy(@PathVariable String document) {
+        try {
+            clientService.deleteClient(document);
+            return new ResponseEntity<>("Cliente eliminador exitosamente.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }

@@ -10,5 +10,6 @@ public interface ClientRepository extends JpaRepository<ClientModel, Long>{
 
     ClientModel getReferenceByDocument(String document);
 
+    void deleteByDocument(ClientModel clientModel);
     
 }
