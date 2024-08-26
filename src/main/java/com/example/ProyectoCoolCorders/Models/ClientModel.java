@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "Clients")
+@Table(name = "clients")
 public class ClientModel {
     
     @Id
@@ -41,7 +41,7 @@ public class ClientModel {
     @Column(nullable = false, length = 10, unique = true)
     private String phone;
 
-    @Column(nullable = false, length = 500, unique = true)
+    @Column(nullable = false, length = 500)
     private String deliveryAddress;
 
 }
