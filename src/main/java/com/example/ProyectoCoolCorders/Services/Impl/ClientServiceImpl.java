@@ -2,8 +2,8 @@ package com.example.ProyectoCoolCorders.Services.Impl;
 
 import org.springframework.stereotype.Service;
 
-import com.example.ProyectoCoolCorders.Dto.ClientModelDto;
-import com.example.ProyectoCoolCorders.Models.ClientModel;
+import com.example.ProyectoCoolCorders.Models.Dto.ClientModelDto;
+import com.example.ProyectoCoolCorders.Models.Entity.ClientModel;
 import com.example.ProyectoCoolCorders.Repositories.ClientRepository;
 import com.example.ProyectoCoolCorders.Services.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -21,35 +21,32 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void createClient(ClientModel document) {
-        clientRepository.save(document);
+    public boolean createClient(ClientModel client) {
+        if (clientRepository.getReferenceByDocument(client.getDocument()) != null) {
+            throw new RuntimeException("Cliente con número de documento ya existe");
+        }
+        clientRepository.save(client);
+        return true;
     }
 
     @Override
-    public void deleteClient(String document) {
-        ClientModel client = clientRepository.getReferenceByDocument(document);
-    
-        if (client != null) {
-            clientRepository.delete(client);
-        } else {
-            throw new RuntimeException("Cliente no encontrado con documento: " + document);
-        }
+    public boolean deleteClient(String document) {
+        ClientModel isDeleteclient = clientRepository.getReferenceByDocument(document);
+        clientRepository.delete(isDeleteclient);
+        return true;
     }
     
     @Override
-    public void updateClient(String document, ClientModelDto clientDTO) {
+    public boolean updateClient(String document, ClientModelDto clientDTO) {
         ClientModel existingClient = clientRepository.getReferenceByDocument(document);
-        
-        if (existingClient != null) {
-            existingClient.setName(clientDTO.getName());
-            existingClient.setEmail(clientDTO.getEmail());
-            existingClient.setPhone(clientDTO.getPhone());
-            existingClient.setDeliveryAddress(clientDTO.getDeliveryAddress());
             
-            clientRepository.save(existingClient);
-        } else {
-            throw new RuntimeException("Cliente no encontrado con documento: " + document);
-        }
+        existingClient.setName(clientDTO.getName());
+        existingClient.setEmail(clientDTO.getEmail());
+        existingClient.setPhone(clientDTO.getPhone());
+        existingClient.setDeliveryAddress(clientDTO.getDeliveryAddress());
+            
+        clientRepository.save(existingClient);
+        return true;
 }
 
 }

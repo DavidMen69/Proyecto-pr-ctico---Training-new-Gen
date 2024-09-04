@@ -3,9 +3,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.example.ProyectoCoolCorders.Dto.ProductModelDto;
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
-import com.example.ProyectoCoolCorders.Models.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
 import com.example.ProyectoCoolCorders.Repositories.ProductRepository;
 import com.example.ProyectoCoolCorders.Services.ProducService;
 import lombok.RequiredArgsConstructor;
