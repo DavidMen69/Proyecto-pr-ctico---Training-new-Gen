@@ -47,4 +47,5 @@ public class ProductModels {
 
     @Column(nullable = false)
     private boolean available;
+
 }
