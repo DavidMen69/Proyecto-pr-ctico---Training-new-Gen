@@ -1,4 +1,4 @@
-package com.example.ProyectoCoolCorders.Dto;
+package com.example.ProyectoCoolCorders.Models.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

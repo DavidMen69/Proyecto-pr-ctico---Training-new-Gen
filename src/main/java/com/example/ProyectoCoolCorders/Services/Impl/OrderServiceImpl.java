@@ -1,8 +1,8 @@
 package com.example.ProyectoCoolCorders.Services.Impl;
 
-import com.example.ProyectoCoolCorders.Dto.OrderModelDto;
+import com.example.ProyectoCoolCorders.Models.Dto.OrderModelDto;
 import com.example.ProyectoCoolCorders.Exceptions.OrderNotFoundException;
-import com.example.ProyectoCoolCorders.Models.Ordermodel;
+import com.example.ProyectoCoolCorders.Models.Entity.Ordermodel;
 import com.example.ProyectoCoolCorders.Repositories.OrderRepository;
 import com.example.ProyectoCoolCorders.Services.OrderService;
 import lombok.RequiredArgsConstructor;

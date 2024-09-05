@@ -1,4 +1,4 @@
-package com.example.ProyectoCoolCorders.Models;
+package com.example.ProyectoCoolCorders.Models.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "clients")
+@Table(name = "orders")
 public class Ordermodel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
