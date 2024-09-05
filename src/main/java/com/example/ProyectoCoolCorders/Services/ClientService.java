@@ -1,16 +1,16 @@
 package com.example.ProyectoCoolCorders.Services;
 
-import com.example.ProyectoCoolCorders.Dto.ClientModelDto;
-import com.example.ProyectoCoolCorders.Models.ClientModel;
+import com.example.ProyectoCoolCorders.Models.Dto.ClientModelDto;
+import com.example.ProyectoCoolCorders.Models.Entity.ClientModel;
 
 public interface ClientService {
 
     ClientModel getClientByDocument(String document);
 
-    void createClient(ClientModel document);
+    boolean createClient(ClientModel document);
 
-    void deleteClient(String  document);
+    boolean deleteClient(String  document);
 
-    void updateClient(String document, ClientModelDto clientDTO);
+    boolean updateClient(String document, ClientModelDto clientDTO);
     
 }
