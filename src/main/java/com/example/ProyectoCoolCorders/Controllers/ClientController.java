@@ -27,11 +27,6 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    @GetMapping("/{document}")
-    public ResponseEntity<ClientModel> getClientByDocument(@PathVariable String document) {
-        return ResponseEntity.ok(clientService.getClientByDocument(document));
-    }
-
     @PostMapping("/createClient")
     public ResponseEntity<String> createClient(@RequestBody ClientModelDto client){
 
@@ -55,6 +50,12 @@ public class ClientController {
         } catch (Exception e) {
             return new ResponseEntity<>("",HttpStatus.INTERNAL_SERVER_ERROR);
         }    
+    }
+
+    @GetMapping("/{document}")
+    public ResponseEntity<ClientModel> getClientByDocument(@PathVariable String document) {
+        ClientModel clientModel = clientService.getClientByDocument(document);
+        return ResponseEntity.ok(clientModel);
     }
 
     @PutMapping("/{document}")
