@@ -7,13 +7,13 @@ import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
 import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
 import com.example.ProyectoCoolCorders.Repositories.ProductRepository;
-import com.example.ProyectoCoolCorders.Services.ProducService;
+import com.example.ProyectoCoolCorders.Services.ProductService;
 import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProducServiceImpl implements ProducService{
+public class ProductServiceImpl implements ProductService{
     
     private final ProductRepository productRepository;
 

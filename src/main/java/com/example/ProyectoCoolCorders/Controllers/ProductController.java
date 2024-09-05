@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
 import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
-import com.example.ProyectoCoolCorders.Services.ProducService;
+import com.example.ProyectoCoolCorders.Services.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/products")
 public class ProductController {
 
-    private final ProducService producService;
+    private final ProductService productService;
 
     @PostMapping
     public ResponseEntity<String> createProduct(@RequestBody ProductModelDto product){
@@ -37,7 +37,7 @@ public class ProductController {
         productToSave.setPrice(product.price);
         productToSave.setDescription(product.description);
         productToSave.setAvailable(product.available);
-        producService.createProduct(productToSave);
+        productService.createProduct(productToSave);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Product created successfully");
@@ -52,14 +52,14 @@ public class ProductController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<ProductModels> getProductByuuid(@PathVariable String uuid){
-        ProductModels product = producService.getProductByuuid(uuid);
+        ProductModels product = productService.getProductByuuid(uuid);
         return ResponseEntity.ok(product);
     }
 
 
     @PutMapping("/{uuid}")
     public ResponseEntity<ProductModels> updateProduct(@PathVariable String uuid, @RequestBody ProductModelDto productDto){
-        boolean  isUpdate = producService.updateProduct(uuid, productDto);
+        boolean  isUpdate = productService.updateProduct(uuid, productDto);
         if(isUpdate){
             return ResponseEntity.noContent().build();
         } else{
@@ -70,7 +70,7 @@ public class ProductController {
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String uuid){
         try {
-            boolean isDeleted = producService.deleteProductByUuid(uuid);
+            boolean isDeleted = productService.deleteProductByUuid(uuid);
             if(isDeleted){
                 return ResponseEntity.noContent().build();
             } else {

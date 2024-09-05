@@ -3,7 +3,7 @@ package com.example.ProyectoCoolCorders.Services;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
 import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
 
-public interface ProducService {
+public interface ProductService {
     // buscar product 
     ProductModels getProductByuuid(String uuid);
     
