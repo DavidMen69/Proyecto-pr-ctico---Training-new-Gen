@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "order")
+@Table(name = "orders")
 public class Ordermodel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

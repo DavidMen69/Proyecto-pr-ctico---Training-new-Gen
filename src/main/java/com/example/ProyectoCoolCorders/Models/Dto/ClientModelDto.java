@@ -10,8 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientModelDto {
+    public Long id;
     public String document;
-    public String name; 
+    public String name;
     public String email;
     public String phone;
     public String deliveryAddress;

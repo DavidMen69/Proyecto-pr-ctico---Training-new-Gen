@@ -1,72 +1,74 @@
-// package com.example.ProyectoCoolCorders.Services.Impl;
+package com.example.ProyectoCoolCorders.Services.Impl;
 
-// import com.example.ProyectoCoolCorders.Exceptions.OrderNotFoundException;
-// import com.example.ProyectoCoolCorders.Models.Dto.OrderModelDto;
-// import com.example.ProyectoCoolCorders.Models.Entity.Ordermodel;
-// import com.example.ProyectoCoolCorders.Repositories.OrderRepository;
-// import com.example.ProyectoCoolCorders.Services.OrderService;
-// import lombok.RequiredArgsConstructor;
-// import org.springframework.stereotype.Service;
+import com.example.ProyectoCoolCorders.Models.Dto.OrderModelDto;
+import com.example.ProyectoCoolCorders.Exceptions.OrderNotFoundException;
+import com.example.ProyectoCoolCorders.Models.Entity.Ordermodel;
+import com.example.ProyectoCoolCorders.Repositories.OrderRepository;
+import com.example.ProyectoCoolCorders.Services.OrderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-// import java.util.Optional;
-// import java.util.UUID;
+import java.util.Optional;
+import java.util.UUID;
 
-// @Service
-// @RequiredArgsConstructor
-// public class OrderServiceImpl implements OrderService {
-//     private final OrderRepository orderRepository;
+@Service
+@RequiredArgsConstructor
+public class OrderServiceImpl implements OrderService {
 
-//     // Método para crear una nueva orden
-//     @Override
-//     public void createOrder(Ordermodel order) {
-//         // Generar UUID para la orden
-//         order.setUuid(UUID.randomUUID().toString());
+    private final OrderRepository orderRepository;
 
-//         // Guardar la orden en el repositorio
-//         orderRepository.save(order);
-//     }
+    // Método para crear una nueva orden
+    @Override
+    public void createOrder(Ordermodel order) {
+        // Generar UUID para la orden
+        order.setUuid(UUID.randomUUID().toString());
 
-//     // Método para obtener una orden por UUID
-//     @Override
-//     public Ordermodel getOrderByUuid(String uuid) {
-//         return orderRepository.findByUuid(uuid)
-//                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
-//     }
+        // Guardar la orden en el repositorio
+        orderRepository.save(order);
+    }
 
-//     // Método para actualizar una orden
-//     @Override
-//     public boolean updateOrder(String uuid, OrderModelDto orderDto) {
-//         Optional<Ordermodel> existingOrderOpt = orderRepository.findByUuid(uuid);
+    // Método para obtener una orden por UUID
+    @Override
+    public Ordermodel getOrderByUuid(String uuid) {
+        return orderRepository.findByUuid(uuid)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
+    }
 
-//         if (!existingOrderOpt.isPresent()) {
-//             throw new OrderNotFoundException("Order not found");
-//         }
+    // Método para actualizar una orden
+    @Override
+    public boolean updateOrder(String uuid, OrderModelDto orderDto) {
+        Optional<Ordermodel> existingOrderOpt = orderRepository.findByUuid(uuid);
 
-//         Ordermodel existingOrder = existingOrderOpt.get();
-//         boolean isUpdated = false;
+        if (!existingOrderOpt.isPresent()) {
+            throw new OrderNotFoundException("Order not found");
+        }
 
-//         if (!existingOrder.getExtraInformation().equalsIgnoreCase(orderDto.getExtraInformation())) {
-//             existingOrder.setExtraInformation(orderDto.getExtraInformation());
-//             isUpdated = true;
-//         }
+        Ordermodel existingOrder = existingOrderOpt.get();
+        boolean isUpdated = false;
 
-//         if (existingOrder.getQuantity() != orderDto.getQuantity()) {
-//             existingOrder.setQuantity(orderDto.getQuantity());
-//             isUpdated = true;
-//         }
+        if (!existingOrder.getExtraInformation().equalsIgnoreCase(orderDto.getExtraInformation())) {
+            existingOrder.setExtraInformation(orderDto.getExtraInformation());
+            isUpdated = true;
+        }
 
-//         // Agrega más campos de actualización si es necesario
+        if (existingOrder.getQuantity() != orderDto.getQuantity()) {
+            existingOrder.setQuantity(orderDto.getQuantity());
+            isUpdated = true;
+        }
 
-//         if (isUpdated) {
-//             orderRepository.save(existingOrder);
-//         }
+        // Agrega más campos de actualización si es necesario
 
-//         return isUpdated;
-//     }
+        if (isUpdated) {
+            orderRepository.save(existingOrder);
+        }
 
-//     @Override
-//     public boolean deleteOrderByUuid(String uuid) {
-//         return false;
-//     }
+        return isUpdated;
+    }
 
-// }
+    @Override
+    public boolean deleteOrderByUuid(String uuid) {
+        return false;
+    }
+
+}
+

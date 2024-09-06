@@ -7,7 +7,7 @@ public interface ClientService {
 
     ClientModel getClientByDocument(String document);
 
-    boolean createClient(ClientModel document);
+    void createClient(ClientModel document);
 
     boolean deleteClient(String  document);
 
