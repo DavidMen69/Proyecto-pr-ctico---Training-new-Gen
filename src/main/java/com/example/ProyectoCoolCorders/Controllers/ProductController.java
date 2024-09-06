@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.ProyectoCoolCorders.Dto.ProductModelDto;
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
-import com.example.ProyectoCoolCorders.Models.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
 import com.example.ProyectoCoolCorders.Services.ProducService;
 
 import lombok.RequiredArgsConstructor;

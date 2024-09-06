@@ -1,7 +1,7 @@
 package com.example.ProyectoCoolCorders.Services;
 
-import com.example.ProyectoCoolCorders.Dto.ProductModelDto;
-import com.example.ProyectoCoolCorders.Models.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
 
 public interface ProducService {
     // buscar product 

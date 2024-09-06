@@ -9,5 +9,3 @@ public class ProductAlreadyExistsException extends RuntimeException {
 }
 
 
-unique_values = set()
-    unique_values.add(1)

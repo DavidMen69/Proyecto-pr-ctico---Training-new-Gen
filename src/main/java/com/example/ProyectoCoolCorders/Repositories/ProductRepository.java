@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.ProyectoCoolCorders.Models.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
 
 @Repository
 public interface ProductRepository extends JpaRepository <ProductModels, Long> {

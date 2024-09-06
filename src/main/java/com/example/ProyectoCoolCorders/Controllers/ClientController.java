@@ -3,8 +3,8 @@ package com.example.ProyectoCoolCorders.Controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.ProyectoCoolCorders.Dto.ClientModelDto;
-import com.example.ProyectoCoolCorders.Models.ClientModel;
+import com.example.ProyectoCoolCorders.Models.Dto.ClientModelDto;
+import com.example.ProyectoCoolCorders.Models.Entity.ClientModel;
 import com.example.ProyectoCoolCorders.Services.ClientService;
 import lombok.RequiredArgsConstructor;
 
@@ -27,45 +27,66 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    @GetMapping("/{document}")
-    public ResponseEntity<ClientModel> getClientByDocument(@PathVariable String document) {
-        return ResponseEntity.ok(clientService.getClientByDocument(document));
-    }
-
     @PostMapping("/createClient")
     public ResponseEntity<String> createClient(@RequestBody ClientModelDto client){
 
         ClientModel clientToSave = new ClientModel();
-
+            
         clientToSave.setDocument(client.document);
         clientToSave.setName(client.name);
         clientToSave.setEmail(client.email);
         clientToSave.setPhone(client.phone);
         clientToSave.setDeliveryAddress(client.deliveryAddress);
-        clientService.createClient(clientToSave);
+        try {
+            boolean iscreate = clientService.createClient(clientToSave);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Client created Sucessfully");
+            if (iscreate) {
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            } else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Cliente con número de documento ya existe",HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("",HttpStatus.INTERNAL_SERVER_ERROR);
+        }    
+    }
+
+    @GetMapping("/{document}")
+    public ResponseEntity<ClientModel> getClientByDocument(@PathVariable String document) {
+        ClientModel clientModel = clientService.getClientByDocument(document);
+        return ResponseEntity.ok(clientModel);
     }
 
     @PutMapping("/{document}")
     public ResponseEntity<String> updateClient(@PathVariable String document, @RequestBody ClientModelDto clientDTO) {
         try {
-            clientService.updateClient(document, clientDTO);
-            return ResponseEntity.ok("Cliente actualizado exitosamente.");
+            boolean updated = clientService.updateClient(document, clientDTO);
+            if (updated) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }else{
+                return new ResponseEntity<>("Cliente no encontrado", HttpStatus.NOT_FOUND);
+            }
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+            return new ResponseEntity<>("El cliente ya existe o los datos son inconsistentes", HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al actualizar cliente: ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @DeleteMapping("/{document}")
     public ResponseEntity<String> destroy(@PathVariable String document) {
         try {
-            clientService.deleteClient(document);
-            return new ResponseEntity<>("Cliente eliminador exitosamente.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            boolean delete = clientService.deleteClient(document);
+            if (delete) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(" No existe cliente con el número de documento suministrado", HttpStatus.NOT_FOUND);
+            }
+        }catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Formato de documento inválido",HttpStatus.BAD_REQUEST);
+        }catch (Exception e) {
+            return new ResponseEntity<>("Error general del servidor" + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-}
+} 
