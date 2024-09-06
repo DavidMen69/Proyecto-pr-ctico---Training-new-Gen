@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService{
     public boolean updateProduct(String uuid, ProductModelDto productDto){
         Optional<ProductModels> existingProductOpt = productRepository.findByUuid(uuid);
 
-        if(!existingProductOpt.isPresent()){
+        if(existingProductOpt.isEmpty()){
             throw new RuntimeException("Product not found");
         }
 
