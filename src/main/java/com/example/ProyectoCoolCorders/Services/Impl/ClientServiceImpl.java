@@ -23,12 +23,8 @@ public class ClientServiceImpl implements ClientService{
         }
 
         @Override
-        public boolean createClient(ClientModel client) {
-            if (clientRepository.findByDocument(client.getDocument()).isPresent()) {
-                throw new RuntimeException("Cliente con número de documento ya existe");
-            }
+        public void createClient(ClientModel client) {
             clientRepository.save(client);
-            return true;
         }
 
         @Override
@@ -43,7 +39,13 @@ public class ClientServiceImpl implements ClientService{
 
         @Override
         public boolean updateClient(String document, ClientModelDto clientDTO) {
-            ClientModel existingClient = clientRepository.getReferenceByDocument(document);
+            Optional<ClientModel> existingClientOtp = clientRepository.findByDocument(document);
+
+            if (existingClientOtp.isEmpty()){
+                throw new RuntimeException("Client not found");
+            }
+
+            ClientModel existingClient = existingClientOtp.get();
 
             existingClient.setName(clientDTO.getName());
             existingClient.setEmail(clientDTO.getEmail());
@@ -51,6 +53,7 @@ public class ClientServiceImpl implements ClientService{
             existingClient.setDeliveryAddress(clientDTO.getDeliveryAddress());
 
             clientRepository.save(existingClient);
+
             return true;
     }
 }

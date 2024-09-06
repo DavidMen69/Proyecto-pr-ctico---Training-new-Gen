@@ -10,10 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientModelDto {
-    private Long id;
-    private String document;
-    private String name;
-    private String email;
-    private String phone;
-    private String deliveryAddress;
+    public Long id;
+    public String document;
+    public String name;
+    public String email;
+    public String phone;
+    public String deliveryAddress;
 }
