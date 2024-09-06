@@ -27,7 +27,7 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    @PostMapping("/createClient")
+    @PostMapping
     public ResponseEntity<String> createClient(@RequestBody ClientModelDto client){
 
         ClientModel clientToSave = new ClientModel();
@@ -37,25 +37,17 @@ public class ClientController {
         clientToSave.setEmail(client.email);
         clientToSave.setPhone(client.phone);
         clientToSave.setDeliveryAddress(client.deliveryAddress);
-        try {
-            boolean iscreate = clientService.createClient(clientToSave);
+        clientService.createClient(clientToSave);
 
-            if (iscreate) {
-                return new ResponseEntity<>(HttpStatus.CREATED);
-            } else{
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>("Cliente con número de documento ya existe",HttpStatus.CONFLICT);
-        } catch (Exception e) {
-            return new ResponseEntity<>("",HttpStatus.INTERNAL_SERVER_ERROR);
-        }    
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Client created successfully");
+
     }
 
     @GetMapping("/{document}")
     public ResponseEntity<ClientModel> getClientByDocument(@PathVariable String document) {
         ClientModel clientModel = clientService.getClientByDocument(document);
-        return ResponseEntity.ok(clientModel);
+        return new ResponseEntity<>(clientModel, HttpStatus.OK);
     }
 
     @PutMapping("/{document}")
@@ -65,10 +57,8 @@ public class ClientController {
             if (updated) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }else{
-                return new ResponseEntity<>("Cliente no encontrado", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("El cliente ya existe o los datos son inconsistentes", HttpStatus.CONFLICT);
             }
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>("El cliente ya existe o los datos son inconsistentes", HttpStatus.CONFLICT);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al actualizar cliente: ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
