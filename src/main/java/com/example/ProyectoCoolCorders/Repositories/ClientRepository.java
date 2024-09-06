@@ -5,12 +5,14 @@ import org.springframework.stereotype.Repository;
 
 import com.example.ProyectoCoolCorders.Models.Entity.ClientModel;
 
+import java.util.Optional;
+
 @Repository
 public interface ClientRepository extends JpaRepository<ClientModel, Long>{
 
 
     ClientModel getReferenceByDocument(String document);
 
-    void deleteByDocument(ClientModel clientModel);
-    
+    Optional<ClientModel> findByDocument(String document);
+
 }

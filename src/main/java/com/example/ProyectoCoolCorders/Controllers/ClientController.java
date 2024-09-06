@@ -32,11 +32,11 @@ public class ClientController {
 
         ClientModel clientToSave = new ClientModel();
             
-        clientToSave.setDocument(client.document);
-        clientToSave.setName(client.name);
-        clientToSave.setEmail(client.email);
-        clientToSave.setPhone(client.phone);
-        clientToSave.setDeliveryAddress(client.deliveryAddress);
+        clientToSave.setDocument(client.getDocument());
+        clientToSave.setName(client.getName());
+        clientToSave.setEmail(client.getEmail());
+        clientToSave.setPhone(client.getPhone());
+        clientToSave.setDeliveryAddress(client.getDeliveryAddress());
         try {
             boolean iscreate = clientService.createClient(clientToSave);
 
@@ -55,7 +55,7 @@ public class ClientController {
     @GetMapping("/{document}")
     public ResponseEntity<ClientModel> getClientByDocument(@PathVariable String document) {
         ClientModel clientModel = clientService.getClientByDocument(document);
-        return ResponseEntity.ok(clientModel);
+        return new ResponseEntity<>(clientModel, HttpStatus.OK);
     }
 
     @PutMapping("/{document}")
