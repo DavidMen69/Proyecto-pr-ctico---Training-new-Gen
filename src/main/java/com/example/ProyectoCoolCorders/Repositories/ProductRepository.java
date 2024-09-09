@@ -5,16 +5,15 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
 
 @Repository
-public interface ProductRepository extends JpaRepository <ProductModels, Long> {
-    //Metodo para obtener El UUID
-    Optional<ProductModels> findByUuid(String uuid);
+public interface ProductRepository extends JpaRepository <ProductModel, Long> {
 
-    //Metodo para verificar si existe un producto con el mismo nombre fantasia
+    ProductModel getReferenceByUuid(String Uuid);
+
+    Optional<ProductModel> findByUuid(String uuid);
+
     boolean existsByFantasyName(String fantasyName);
-
-    
 
 }

@@ -1,27 +1,33 @@
 package com.example.ProyectoCoolCorders.Models.Dto;
 
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-
+@Setter
+@Getter
+@AllArgsConstructor
+@Builder
 public class OrderModelDto {
-        private String uuid;
-        private LocalDateTime creationDateTime;
-        private String clientDocument;
-        private String productUuid;
-        private int quantity;
-        private String extraInformation;
-        private double subTotal;
-        private double tax;
-        private double grandTotal;
-        private boolean delivered;
-        private LocalDateTime deliveredDate;
+
+        public String uuid;
+        @CreationTimestamp
+        public LocalDateTime creationDateTime;
+        public int quantity;
+        public String extraInformation;
+        public double subTotal;
+        public double tax;
+        public double grandTotal;
+        public boolean delivered;
+        public LocalDateTime deliveredDate;
+        public String clientDocument;
+        public String productUuid;
+
 }

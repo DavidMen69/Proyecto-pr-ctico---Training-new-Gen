@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
-import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
 import com.example.ProyectoCoolCorders.Repositories.ProductRepository;
 import com.example.ProyectoCoolCorders.Services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService{
 
     //Metodo Crear Producto
     @Override
-    public void createProduct(ProductModels product) {
+    public void createProduct(ProductModel product) {
 
         if(productRepository.existsByFantasyName(product.getFantasyName())){
             throw new ProductAlreadyExistsException("Producto Con Nombre Fantasia Ya Existe");
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService{
 
     // Metodo para Obtener Producto Por UUID
     @Override
-    public ProductModels getProductByuuid(String uuid) {
+    public ProductModel getProductByuuid(String uuid) {
         return productRepository.findByUuid(uuid).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
@@ -47,13 +47,13 @@ public class ProductServiceImpl implements ProductService{
 
     @Override 
     public boolean updateProduct(String uuid, ProductModelDto productDto){
-        Optional<ProductModels> existingProductOpt = productRepository.findByUuid(uuid);
+        Optional<ProductModel> existingProductOpt = productRepository.findByUuid(uuid);
 
         if(existingProductOpt.isEmpty()){
             throw new RuntimeException("Product not found");
         }
 
-        ProductModels existingProduct = existingProductOpt.get();
+        ProductModel existingProduct = existingProductOpt.get();
 
         if (!existingProduct.getFantasyName().equalsIgnoreCase(productDto.getFantasyName()) && 
             productRepository.existsByFantasyName(productDto.getFantasyName().toUpperCase())) {
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService{
     // Servicio Delete Product By Uuid
     @Override
     public boolean deleteProductByUuid(String uuid) {
-        Optional<ProductModels> existingProductOpt = productRepository.findByUuid(uuid);
+        Optional<ProductModel> existingProductOpt = productRepository.findByUuid(uuid);
 
         if(existingProductOpt.isPresent()){
             productRepository.delete(existingProductOpt.get());

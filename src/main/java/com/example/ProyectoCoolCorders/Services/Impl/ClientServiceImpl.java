@@ -23,12 +23,12 @@ public class ClientServiceImpl implements ClientService{
         }
 
         @Override
-        public void createClient(ClientModel client) {
-            clientRepository.save(client);
+        public ClientModel createClient(ClientModel client) {
+            return clientRepository.save(client);
         }
 
         @Override
-        public boolean deleteClient(String document) {
+        public Boolean deleteClient(String document) {
             Optional<ClientModel> existingClient = clientRepository.findByDocument(document);
             if (existingClient.isPresent()){
                 clientRepository.delete(existingClient.get());
@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService{
         }
 
         @Override
-        public boolean updateClient(String document, ClientModelDto clientDTO) {
+        public ClientModel updateClient(String document, ClientModelDto clientDTO) {
             Optional<ClientModel> existingClientOtp = clientRepository.findByDocument(document);
 
             if (existingClientOtp.isEmpty()){
@@ -52,8 +52,6 @@ public class ClientServiceImpl implements ClientService{
             existingClient.setPhone(clientDTO.getPhone());
             existingClient.setDeliveryAddress(clientDTO.getDeliveryAddress());
 
-            clientRepository.save(existingClient);
-
-            return true;
+            return clientRepository.save(existingClient);
     }
 }

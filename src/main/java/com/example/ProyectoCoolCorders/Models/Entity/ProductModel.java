@@ -1,15 +1,13 @@
 package com.example.ProyectoCoolCorders.Models.Entity;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.GenerationType;
 
 
 @Entity
@@ -18,7 +16,7 @@ import jakarta.persistence.GenerationType;
 @NoArgsConstructor
 @Builder
 @Table(name = "Products")
-public class ProductModels {
+public class ProductModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, unique = true)
@@ -42,4 +40,9 @@ public class ProductModels {
 
     @Column(nullable = false)
     private boolean available;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "productUUID", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonBackReference
+    private List<Ordermodel> orderList = new ArrayList<>();
 }
