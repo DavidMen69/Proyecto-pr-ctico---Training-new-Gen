@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
-import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
 import com.example.ProyectoCoolCorders.Services.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<String> createProduct(@RequestBody ProductModelDto product){
 
-        ProductModels productToSave = new ProductModels();
+        ProductModel productToSave = new ProductModel();
 
         productToSave.setFantasyName(product.fantasyName);
         productToSave.setCategory(product.category);
@@ -51,14 +51,14 @@ public class ProductController {
 
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<ProductModels> getProductByuuid(@PathVariable String uuid){
-        ProductModels product = productService.getProductByuuid(uuid);
+    public ResponseEntity<ProductModel> getProductByuuid(@PathVariable String uuid){
+        ProductModel product = productService.getProductByuuid(uuid);
         return ResponseEntity.ok(product);
     }
 
 
     @PutMapping("/{uuid}")
-    public ResponseEntity<ProductModels> updateProduct(@PathVariable String uuid, @RequestBody ProductModelDto productDto){
+    public ResponseEntity<ProductModel> updateProduct(@PathVariable String uuid, @RequestBody ProductModelDto productDto){
         boolean  isUpdate = productService.updateProduct(uuid, productDto);
         if(isUpdate){
             return ResponseEntity.noContent().build();

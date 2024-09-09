@@ -1,11 +1,17 @@
 package com.example.ProyectoCoolCorders.Services.Impl;
 
+import com.example.ProyectoCoolCorders.Exceptions.ProductNotFoundException;
 import com.example.ProyectoCoolCorders.Models.Dto.OrderModelDto;
 import com.example.ProyectoCoolCorders.Exceptions.OrderNotFoundException;
+import com.example.ProyectoCoolCorders.Models.Entity.ClientModel;
 import com.example.ProyectoCoolCorders.Models.Entity.Ordermodel;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
+import com.example.ProyectoCoolCorders.Repositories.ClientRepository;
 import com.example.ProyectoCoolCorders.Repositories.OrderRepository;
+import com.example.ProyectoCoolCorders.Repositories.ProductRepository;
 import com.example.ProyectoCoolCorders.Services.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,59 +21,49 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    @Autowired
+    private final ClientRepository clientRepository;
+
+    @Autowired
+    private final ProductRepository productRepository;
+
+    @Autowired
     private final OrderRepository orderRepository;
 
-    // Método para crear una nueva orden
     @Override
-    public void createOrder(Ordermodel order) {
-        // Generar UUID para la orden
+    public Ordermodel createOrder(Ordermodel order) {
+
         order.setUuid(UUID.randomUUID().toString());
 
-        // Guardar la orden en el repositorio
-        orderRepository.save(order);
+        return orderRepository.save(order);
+
     }
 
-    // Método para obtener una orden por UUID
     @Override
     public Ordermodel getOrderByUuid(String uuid) {
         return orderRepository.findByUuid(uuid)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found"));
     }
 
-    // Método para actualizar una orden
     @Override
-    public boolean updateOrder(String uuid, OrderModelDto orderDto) {
-        Optional<Ordermodel> existingOrderOpt = orderRepository.findByUuid(uuid);
+    public Ordermodel updateOrder(String uuid, OrderModelDto orderDto) {
 
-        if (!existingOrderOpt.isPresent()) {
-            throw new OrderNotFoundException("Order not found");
+        Optional<Ordermodel> existingOrderOpt = orderRepository.findByUuid(uuid);
+        if (existingOrderOpt.isEmpty()) {
+            throw new OrderNotFoundException("Orden con UUID " + uuid + " no encontrada");
         }
 
         Ordermodel existingOrder = existingOrderOpt.get();
-        boolean isUpdated = false;
 
-        if (!existingOrder.getExtraInformation().equalsIgnoreCase(orderDto.getExtraInformation())) {
-            existingOrder.setExtraInformation(orderDto.getExtraInformation());
-            isUpdated = true;
+        if (orderDto.delivered){
+            existingOrder.setDelivered(true);
         }
 
-        if (existingOrder.getQuantity() != orderDto.getQuantity()) {
-            existingOrder.setQuantity(orderDto.getQuantity());
-            isUpdated = true;
+        if (orderDto.getDeliveredDate() != null) {
+            existingOrder.setDeliveredDate(orderDto.getDeliveredDate());
         }
 
-        // Agrega más campos de actualización si es necesario
-
-        if (isUpdated) {
-            orderRepository.save(existingOrder);
-        }
-
-        return isUpdated;
-    }
-
-    @Override
-    public boolean deleteOrderByUuid(String uuid) {
-        return false;
+        return orderRepository.save(existingOrder);
     }
 
 }
