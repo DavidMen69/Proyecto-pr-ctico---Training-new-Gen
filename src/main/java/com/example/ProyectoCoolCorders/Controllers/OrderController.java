@@ -96,7 +96,7 @@ public class OrderController {
             @PathVariable String uuid,
             @PathVariable String timestamp) {
 
-        // Convertir el timestamp a LocalDateTime
+
         LocalDateTime deliveredDate;
         try {
             deliveredDate = LocalDateTime.parse(timestamp);
@@ -104,17 +104,17 @@ public class OrderController {
             return new ResponseEntity<>("Formato de fecha inválido", HttpStatus.BAD_REQUEST);
         }
 
-        // Crear un DTO con el estado de entregado y la fecha de entrega
+
         OrderModelDto orderDto = new OrderModelDto();
-        orderDto.setDelivered(true); // Marcamos como entregado
-        orderDto.setDeliveredDate(deliveredDate); // Establecemos la fecha de entrega
+        orderDto.setDelivered(true);
+        orderDto.setDeliveredDate(deliveredDate);
 
         try {
-            // Llamar al servicio para actualizar la orden
+
             Ordermodel updatedOrder = orderService.updateOrder(uuid, orderDto);
 
             if (updatedOrder != null) {
-                // Crear el JSON para la respuesta
+
                 Map<String, Object> response = new HashMap<>();
                 response.put("uuid", updatedOrder.getUuid());
                 response.put("creationDateTime", updatedOrder.getCreationDateTime().toString());
@@ -123,7 +123,7 @@ public class OrderController {
                 response.put("quantity", updatedOrder.getQuantity());
                 response.put("extraInformation", updatedOrder.getExtraInformation());
 
-                // Convertir el precio del producto de String a double y calcular el subtotal
+
                 double productPrice;
                 try {
                     productPrice = Double.parseDouble(String.valueOf(updatedOrder.getProductUUID().getPrice()));
