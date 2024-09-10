@@ -20,6 +20,8 @@ import com.example.ProyectoCoolCorders.Services.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.security.auth.login.CredentialNotFoundException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -28,7 +30,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody ProductModelDto product){
+    public ResponseEntity<Object> createProduct(@RequestBody ProductModelDto product){
 
         ProductModel productToSave = new ProductModel();
 
@@ -37,10 +39,9 @@ public class ProductController {
         productToSave.setPrice(product.price);
         productToSave.setDescription(product.description);
         productToSave.setAvailable(product.available);
-        productService.createProduct(productToSave);
+        ProductModel saveProduct = productService.createProduct(productToSave);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Product created successfully");
+        return new ResponseEntity<>(saveProduct, HttpStatus.CREATED);
     }
 
     @ExceptionHandler(ProductAlreadyExistsException.class)

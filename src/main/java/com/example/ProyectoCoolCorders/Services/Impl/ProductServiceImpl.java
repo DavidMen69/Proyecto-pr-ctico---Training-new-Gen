@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService{
 
     //Metodo Crear Producto
     @Override
-    public void createProduct(ProductModel product) {
+    public ProductModel createProduct(ProductModel product) {
 
         if(productRepository.existsByFantasyName(product.getFantasyName())){
             throw new ProductAlreadyExistsException("Producto Con Nombre Fantasia Ya Existe");
@@ -33,7 +33,8 @@ public class ProductServiceImpl implements ProductService{
         product.setCategory(product.getCategory().toUpperCase());
 
         // Guardar Producto 
-        productRepository.save(product);
+        ProductModel saveproduct = productRepository.save(product);
+        return saveproduct;
     }
 
     // Metodo para Obtener Producto Por UUID
