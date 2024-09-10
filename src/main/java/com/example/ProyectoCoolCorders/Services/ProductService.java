@@ -8,7 +8,7 @@ public interface ProductService {
     ProductModel getProductByuuid(String uuid);
     
     //crear product
-    void createProduct(ProductModel product);
+    ProductModel createProduct(ProductModel product);
 
     //Actualizar product
     boolean updateProduct(String uuid, ProductModelDto productDto);
