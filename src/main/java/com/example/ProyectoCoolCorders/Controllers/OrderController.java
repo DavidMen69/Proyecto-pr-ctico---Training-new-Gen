@@ -92,9 +92,7 @@ public class OrderController {
     }
 
     @PutMapping("/{uuid}/delivered/{timestamp}")
-    public ResponseEntity<Object> updateOrder(
-            @PathVariable String uuid,
-            @PathVariable String timestamp) {
+    public ResponseEntity<Object> updateOrder(@PathVariable String uuid, @PathVariable String timestamp) {
 
 
         LocalDateTime deliveredDate;
@@ -115,30 +113,22 @@ public class OrderController {
 
             if (updatedOrder != null) {
 
-                Map<String, Object> response = new HashMap<>();
-                response.put("uuid", updatedOrder.getUuid());
-                response.put("creationDateTime", updatedOrder.getCreationDateTime().toString());
-                response.put("clientDocument", updatedOrder.getClientDocument().getDocument());
-                response.put("productUUID", updatedOrder.getProductUUID().getUuid());
-                response.put("quantity", updatedOrder.getQuantity());
-                response.put("extraInformation", updatedOrder.getExtraInformation());
+                OrderResponseDto responseDto = new OrderResponseDto();
 
+                responseDto.setUuid(updatedOrder.getUuid());
+                responseDto.setCreationDateTime(updatedOrder.getCreationDateTime());
+                responseDto.setClientDocument(updatedOrder.getClientDocument().getDocument());
+                responseDto.setProductUUID(updatedOrder.getProductUUID().getUuid());
+                responseDto.setQuantity(updatedOrder.getQuantity());
+                responseDto.setExtraInformation(updatedOrder.getExtraInformation());
+                responseDto.setSubTotal(updatedOrder.getSubTotal());
+                responseDto.setTax(updatedOrder.getTax());
+                responseDto.setGrandTotal(updatedOrder.getGrandTotal());
+                responseDto.setDelivered(updatedOrder.isDelivered());
+                responseDto.setDeliveredDate(updatedOrder.getDeliveredDate());
 
-                double productPrice;
-                try {
-                    productPrice = Double.parseDouble(String.valueOf(updatedOrder.getProductUUID().getPrice()));
-                } catch (NumberFormatException e) {
-                    return new ResponseEntity<>("Precio del producto inválido", HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-                double subTotal = productPrice * updatedOrder.getQuantity();
-                response.put("subTotal", subTotal);
+                return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
-                response.put("tax", updatedOrder.getTax());
-                response.put("grandTotal", updatedOrder.getGrandTotal());
-                response.put("delivered", updatedOrder.isDelivered());
-                response.put("deliveredDate", updatedOrder.getDeliveredDate() != null ? updatedOrder.getDeliveredDate().toString() : null);
-
-                return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("La orden no fue encontrada con los datos proporcionados", HttpStatus.NOT_FOUND);
             }
