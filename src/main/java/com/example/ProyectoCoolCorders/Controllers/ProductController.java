@@ -3,15 +3,7 @@ package com.example.ProyectoCoolCorders.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
@@ -21,6 +13,7 @@ import com.example.ProyectoCoolCorders.Services.ProductService;
 import lombok.RequiredArgsConstructor;
 
 import javax.security.auth.login.CredentialNotFoundException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -84,5 +77,25 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProducts(@RequestParam("q") String query){
+        // Validar que el parámetro 'q' no esté vacío
+        if (query == null || query.trim().isEmpty()){
+            return ResponseEntity.badRequest().body("El parámetro de búsqueda no puede estar vacío");
+        }
+
+        // Buscar productos por nombre de fantasía
+        List<ProductModel> product = productService.searchProductsByFantasyName(query);
+
+        // Si no se encontraron productos
+
+        if (product.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron productos con el nombre de fantasía proporcionado.");
+        }
+
+        // Retornar la lista de productos
+
+        return ResponseEntity.ok(product);
+    }
 
 }

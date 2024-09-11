@@ -1,4 +1,5 @@
 package com.example.ProyectoCoolCorders.Services.Impl;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -104,6 +105,11 @@ public class ProductServiceImpl implements ProductService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<ProductModel> searchProductsByFantasyName(String query){
+        return productRepository.searchByFantasyName(query);
     }
 
 
