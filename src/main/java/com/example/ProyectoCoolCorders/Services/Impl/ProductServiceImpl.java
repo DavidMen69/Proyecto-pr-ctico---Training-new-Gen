@@ -109,7 +109,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductModel> searchProductsByFantasyName(String query){
-        return productRepository.searchByFantasyName(query);
+        //ist<ProductModel> products = productRepository.searchByFantasyName(query);
+
+        return productRepository.findByFantasyNameContainingOrderByFantasyNameAsc(query);
     }
 
 
