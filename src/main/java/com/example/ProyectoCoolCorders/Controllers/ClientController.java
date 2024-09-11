@@ -28,7 +28,7 @@ public class ClientController {
     private final ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<String> createClient(@RequestBody ClientModelDto client){
+    public ResponseEntity<Object> createClient(@RequestBody ClientModelDto client){
 
         ClientModel clientToSave = new ClientModel();
             
@@ -37,10 +37,10 @@ public class ClientController {
         clientToSave.setEmail(client.email);
         clientToSave.setPhone(client.phone);
         clientToSave.setDeliveryAddress(client.deliveryAddress);
-        clientService.createClient(clientToSave);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Client created successfully");
+        ClientModel saveClient = clientService.createClient(clientToSave);
+
+        return new ResponseEntity<>(saveClient, HttpStatus.CREATED);
 
     }
 
@@ -51,13 +51,13 @@ public class ClientController {
     }
 
     @PutMapping("/{document}")
-    public ResponseEntity<String> updateClient(@PathVariable String document, @RequestBody ClientModelDto clientDTO) {
+    public ResponseEntity<Object> updateClient(@PathVariable String document, @RequestBody ClientModelDto clientDTO) {
         try {
-            boolean updated = clientService.updateClient(document, clientDTO);
-            if (updated) {
+            ClientModel updated = clientService.updateClient(document, clientDTO);
+            if (updated != null) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }else{
-                return new ResponseEntity<>("El cliente ya existe o los datos son inconsistentes", HttpStatus.CONFLICT);
+                return new ResponseEntity<>("Cliente no encontrado con los datos proporcionados.", HttpStatus.CONFLICT);
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Error al actualizar cliente: ", HttpStatus.INTERNAL_SERVER_ERROR);

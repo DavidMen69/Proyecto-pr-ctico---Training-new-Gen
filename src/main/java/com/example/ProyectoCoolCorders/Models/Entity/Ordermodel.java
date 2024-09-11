@@ -7,12 +7,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -30,8 +33,19 @@ public class Ordermodel {
     @JsonIgnore
     private Long id;
 
-    @Column(updatable = false, nullable = false, length = 100, unique = true)
-    private String productUuid;
+    @Column(nullable = false, length = 36, unique = true)
+    private String uuid;
+
+    @CreationTimestamp
+    private LocalDateTime creationDateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "client_document", nullable = false)
+    private ClientModel clientDocument;
+
+    @ManyToOne
+    @JoinColumn(name = "product", nullable = false)
+    private ProductModel productUUID;
 
     @Column(updatable = false,nullable = false, length = 20, unique = true)
     private int quantity;
@@ -39,29 +53,15 @@ public class Ordermodel {
     @Column(nullable = false, length = 500, unique = true)
     private String extraInformation;
 
-    @Column(nullable = false, length = 36, unique = true)
-    private String uuid;
-
-    @Column(nullable = false)
-    private LocalDateTime creationDateTime;
-
-    @Column(nullable = false, length = 50)
-    private String clientDocument;
-
-    @Column(nullable = false)
     private double subTotal;
 
-    @Column(nullable = false)
     private double tax;
 
-    @Column(nullable = false)
     private double grandTotal;
 
-    @Column(nullable = false)
-    private boolean delivered;
+    @Builder.Default
+    private boolean delivered = false;
 
-    @Column
     private LocalDateTime deliveredDate;
-
 
 }

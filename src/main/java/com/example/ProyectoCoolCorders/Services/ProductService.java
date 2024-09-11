@@ -1,14 +1,16 @@
 package com.example.ProyectoCoolCorders.Services;
 
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
-import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
+
+import java.util.List;
 
 public interface ProductService {
     // buscar product 
-    ProductModels getProductByuuid(String uuid);
+    ProductModel getProductByuuid(String uuid);
     
     //crear product
-    void createProduct(ProductModels product);
+    ProductModel createProduct(ProductModel product);
 
     //Actualizar product
     boolean updateProduct(String uuid, ProductModelDto productDto);
@@ -16,4 +18,5 @@ public interface ProductService {
     // Eliminar Product
     boolean deleteProductByUuid(String uuid);
 
+    List<ProductModel> searchProductsByFantasyName(String query);
 }

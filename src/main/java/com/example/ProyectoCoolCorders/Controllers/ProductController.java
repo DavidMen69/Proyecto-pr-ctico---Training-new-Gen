@@ -3,22 +3,17 @@ package com.example.ProyectoCoolCorders.Controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.ProyectoCoolCorders.Exceptions.ProductAlreadyExistsException;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
-import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
 import com.example.ProyectoCoolCorders.Services.ProductService;
 
 import lombok.RequiredArgsConstructor;
+
+import javax.security.auth.login.CredentialNotFoundException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,19 +23,18 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<String> createProduct(@RequestBody ProductModelDto product){
+    public ResponseEntity<Object> createProduct(@RequestBody ProductModelDto product){
 
-        ProductModels productToSave = new ProductModels();
+        ProductModel productToSave = new ProductModel();
 
         productToSave.setFantasyName(product.fantasyName);
         productToSave.setCategory(product.category);
         productToSave.setPrice(product.price);
         productToSave.setDescription(product.description);
         productToSave.setAvailable(product.available);
-        productService.createProduct(productToSave);
+        ProductModel saveProduct = productService.createProduct(productToSave);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Product created successfully");
+        return new ResponseEntity<>(saveProduct, HttpStatus.CREATED);
     }
 
     @ExceptionHandler(ProductAlreadyExistsException.class)
@@ -51,14 +45,14 @@ public class ProductController {
 
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<ProductModels> getProductByuuid(@PathVariable String uuid){
-        ProductModels product = productService.getProductByuuid(uuid);
+    public ResponseEntity<ProductModel> getProductByuuid(@PathVariable String uuid){
+        ProductModel product = productService.getProductByuuid(uuid);
         return ResponseEntity.ok(product);
     }
 
 
     @PutMapping("/{uuid}")
-    public ResponseEntity<ProductModels> updateProduct(@PathVariable String uuid, @RequestBody ProductModelDto productDto){
+    public ResponseEntity<ProductModel> updateProduct(@PathVariable String uuid, @RequestBody ProductModelDto productDto){
         boolean  isUpdate = productService.updateProduct(uuid, productDto);
         if(isUpdate){
             return ResponseEntity.noContent().build();
@@ -83,5 +77,25 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProducts(@RequestParam("q") String query){
+        // Validar que el parámetro 'q' no esté vacío
+        if (query == null || query.trim().isEmpty()){
+            return ResponseEntity.badRequest().body("El parámetro de búsqueda no puede estar vacío");
+        }
+
+        // Buscar productos por nombre de fantasía
+        List<ProductModel> product = productService.searchProductsByFantasyName(query);
+
+        // Si no se encontraron productos
+
+        if (product.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron productos con el nombre de fantasía proporcionado.");
+        }
+
+        // Retornar la lista de productos
+
+        return ResponseEntity.ok(product);
+    }
 
 }

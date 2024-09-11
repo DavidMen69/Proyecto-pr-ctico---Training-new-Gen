@@ -1,20 +1,26 @@
 package com.example.ProyectoCoolCorders.Repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.ProyectoCoolCorders.Models.Entity.ProductModels;
+import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
 
 @Repository
-public interface ProductRepository extends JpaRepository <ProductModels, Long> {
-    //Metodo para obtener El UUID
-    Optional<ProductModels> findByUuid(String uuid);
+public interface ProductRepository extends JpaRepository <ProductModel, Long> {
 
-    //Metodo para verificar si existe un producto con el mismo nombre fantasia
+    ProductModel getReferenceByUuid(String Uuid);
+
+    Optional<ProductModel> findByUuid(String uuid);
+
     boolean existsByFantasyName(String fantasyName);
 
-    
+    //Metodo para buscar productos por nombre de fantasia usando LIKE
+    @Query("SELECT p FROM ProductModel p WHERE LOWER(p.fantasyName) LIKE LOWER(CONCAT('%', :query, '%'))ORDER BY p.fantasyName ASC")
+    List<ProductModel> searchByFantasyName(@Param("query") String query);
 
 }
