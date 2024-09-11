@@ -20,7 +20,9 @@ public interface ProductRepository extends JpaRepository <ProductModel, Long> {
     boolean existsByFantasyName(String fantasyName);
 
     //Metodo para buscar productos por nombre de fantasia usando LIKE
-    @Query("SELECT p FROM ProductModel p WHERE LOWER(p.fantasyName) LIKE LOWER(CONCAT('%', :query, '%'))ORDER BY p.fantasyName ASC")
-    List<ProductModel> searchByFantasyName(@Param("query") String query);
+    //@Query("SELECT p FROM ProductModel p WHERE LOWER(p.fantasyName) LIKE LOWER(CONCAT('%', :query, '%'))ORDER BY p.fantasyName ASC")
+    //List<ProductModel> searchByFantasyName(@Param("query") String query);
+    List<ProductModel> findByFantasyNameContainingOrderByFantasyNameAsc (String query);
+
 
 }

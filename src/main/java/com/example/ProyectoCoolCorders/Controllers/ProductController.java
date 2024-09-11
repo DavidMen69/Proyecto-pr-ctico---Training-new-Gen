@@ -1,6 +1,7 @@
 package com.example.ProyectoCoolCorders.Controllers;
 
 
+import com.example.ProyectoCoolCorders.Utils.ProyectoCoolCordersUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +81,8 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<?> searchProducts(@RequestParam("q") String query){
         // Validar que el parámetro 'q' no esté vacío
-        if (query == null || query.trim().isEmpty()){
+
+        if (ProyectoCoolCordersUtils.validateQuery(query)){
             return ResponseEntity.badRequest().body("El parámetro de búsqueda no puede estar vacío");
         }
 
@@ -88,14 +90,7 @@ public class ProductController {
         List<ProductModel> product = productService.searchProductsByFantasyName(query);
 
         // Si no se encontraron productos
-
-        if (product.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron productos con el nombre de fantasía proporcionado.");
-        }
-
-        // Retornar la lista de productos
-
-        return ResponseEntity.ok(product);
+        return product.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron productos con el nombre de fantasía proporcionado.") : ResponseEntity.ok(product);
     }
 
 }
