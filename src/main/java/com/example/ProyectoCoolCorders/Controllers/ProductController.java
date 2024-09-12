@@ -21,6 +21,7 @@ import com.example.ProyectoCoolCorders.Services.ProductService;
 import lombok.RequiredArgsConstructor;
 
 import javax.security.auth.login.CredentialNotFoundException;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,9 +53,9 @@ public class ProductController {
 
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<ProductModel> getProductByuuid(@PathVariable String uuid){
-        ProductModel product = productService.getProductByuuid(uuid);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<Object> getProductByuuid(@PathVariable String uuid){
+        Optional<ProductModel> product = productService.getProductByuuid(uuid);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
 
