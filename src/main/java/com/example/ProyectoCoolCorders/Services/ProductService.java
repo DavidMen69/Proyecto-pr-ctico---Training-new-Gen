@@ -3,11 +3,14 @@ package com.example.ProyectoCoolCorders.Services;
 import com.example.ProyectoCoolCorders.Models.Dto.ProductModelDto;
 import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
 
+
+import java.util.Optional;
 import java.util.List;
+
 
 public interface ProductService {
     // buscar product 
-    ProductModel getProductByuuid(String uuid);
+    Optional<ProductModel> getProductByuuid(String uuid);
     
     //crear product
     ProductModel createProduct(ProductModel product);

@@ -26,22 +26,19 @@ public class ProductServiceImpl implements ProductService{
             throw new ProductAlreadyExistsException("Producto Con Nombre Fantasia Ya Existe");
         }
 
-        // Generar UUID
         product.setUuid(UUID.randomUUID().toString());
 
-        // Convertir El Nombre De Fantasia A Masyusculas
         product.setFantasyName(product.getFantasyName().toUpperCase());
         product.setCategory(product.getCategory().toUpperCase());
 
-        // Guardar Producto 
         ProductModel saveproduct = productRepository.save(product);
         return saveproduct;
     }
 
     // Metodo para Obtener Producto Por UUID
     @Override
-    public ProductModel getProductByuuid(String uuid) {
-        return productRepository.findByUuid(uuid).orElseThrow(() -> new RuntimeException("Product not found"));
+    public Optional<ProductModel> getProductByuuid(String uuid) {
+        return productRepository.findByUuid(uuid);
     }
 
 

@@ -18,8 +18,9 @@ import java.time.LocalDateTime;
 public class OrderModelDto {
 
         public String uuid;
-        @CreationTimestamp
         public LocalDateTime creationDateTime;
+        public String clientDocument;
+        public String productUUID;
         public int quantity;
         public String extraInformation;
         public double subTotal;
@@ -27,7 +28,5 @@ public class OrderModelDto {
         public double grandTotal;
         public boolean delivered;
         public LocalDateTime deliveredDate;
-        public String clientDocument;
-        public String productUuid;
 
 }

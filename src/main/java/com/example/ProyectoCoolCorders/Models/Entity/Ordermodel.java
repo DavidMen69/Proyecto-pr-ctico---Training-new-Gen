@@ -47,10 +47,10 @@ public class Ordermodel {
     @JoinColumn(name = "product", nullable = false)
     private ProductModel productUUID;
 
-    @Column(updatable = false,nullable = false, length = 20, unique = true)
+    @Column(updatable = false,nullable = false, length = 20)
     private int quantity;
 
-    @Column(nullable = false, length = 500, unique = true)
+    @Column(nullable = false, length = 500)
     private String extraInformation;
 
     private double subTotal;

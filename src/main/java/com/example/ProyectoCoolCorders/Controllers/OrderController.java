@@ -7,20 +7,17 @@ import com.example.ProyectoCoolCorders.Models.Dto.OrderResponseDto;
 import com.example.ProyectoCoolCorders.Models.Entity.ClientModel;
 import com.example.ProyectoCoolCorders.Models.Entity.Ordermodel;
 import com.example.ProyectoCoolCorders.Models.Entity.ProductModel;
-import com.example.ProyectoCoolCorders.Repositories.ClientRepository;
-import com.example.ProyectoCoolCorders.Repositories.ProductRepository;
+import com.example.ProyectoCoolCorders.Services.ClientService;
 import com.example.ProyectoCoolCorders.Services.OrderService;
+import com.example.ProyectoCoolCorders.Services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @AllArgsConstructor
@@ -32,21 +29,22 @@ public class OrderController {
     private final OrderService orderService;
 
     @Autowired
-    private final ClientRepository clientRepository;
+    private final ClientService clientService;
 
     @Autowired
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
 
     @PostMapping
     public ResponseEntity<Object> createOrder(@RequestBody OrderModelDto orderDto) {
 
-        ClientModel client = clientRepository.findByDocument(orderDto.getClientDocument())
-                .orElseThrow(() -> new OrderNotFoundException("Cliente con documento " + orderDto.getClientDocument() + " no encontrado"));
+        ClientModel client = clientService.getClientByDocument(orderDto.getClientDocument());
+        if (client == null) {
+            throw new OrderNotFoundException("Cliente con documento " + orderDto.getClientDocument() + " no encontrado");
+        }
 
-
-        ProductModel product = productRepository.findByUuid(orderDto.getProductUuid())
-                .orElseThrow(() -> new ProductNotFoundException("Producto con UUID " + orderDto.getProductUuid() + " no encontrado"));
+        ProductModel product = productService.getProductByuuid(orderDto.productUUID)
+                .orElseThrow(() -> new ProductNotFoundException("Producto con UUID " + orderDto.productUUID + " no encontrado"));
 
 
         Ordermodel orderToSave = new Ordermodel();
